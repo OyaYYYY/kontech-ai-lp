@@ -17,13 +17,24 @@
   <!--
     公式LINE URLの差し替え:
     下の data-line-url を本番の友だち追加URLに変更してください。
-    （main.js も同じ値を参照します）
   -->
   <div id="config" data-line-url="#line" hidden></div>
 
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="icon-line" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19.8 4.2C17.7 2.1 14.6 1 12 1S6.3 2.1 4.2 4.2C2.1 6.3 1 9.1 1 12c0 2.4.9 4.6 2.5 6.3l-.7 3.4c-.1.4.3.8.7.7l3.6-.8C8.5 22.5 10.2 23 12 23c2.9 0 5.7-1.1 7.8-3.2C21.9 17.7 23 14.9 23 12s-1.1-5.7-3.2-7.8zM7.4 14.1H6.1c-.3 0-.5-.2-.5-.5V9.4c0-.3.2-.5.5-.5s.5.2.5.5v3.7h1.3c.3 0 .5.2.5.5s-.2.5-.5.5zm3.3 0H9.2c-.3 0-.5-.2-.5-.5V9.4c0-.3.2-.5.5-.5s.5.2.5.5v3.7h1.5c.3 0 .5.2.5.5s-.3.5-.5.5zm4.1-.5c0 .3-.2.5-.5.5h-2.3c-.3 0-.5-.2-.5-.5V9.4c0-.3.2-.5.5-.5s.5.2.5.5v3.2h1.8c.3 0 .5.2.5.5zm3.7.5h-1.3c-.3 0-.5-.2-.5-.5V9.4c0-.3.2-.5.5-.5h1.3c.3 0 .5.2.5.5s-.2.5-.5.5h-.8v.9h.8c.3 0 .5.2.5.5s-.2.5-.5.5h-.8v.9h.8c.3 0 .5.2.5.5s-.2.5-.5.5z"/>
+    </symbol>
+  </svg>
+
   <header class="site-header">
-    <a class="logo" href="#top" aria-label="KonTech トップ">KonTech</a>
-    <a class="header-cta line-link" href="#line">公式LINE</a>
+    <a class="logo" href="#top">
+      <span class="logo-ja">KonTech</span>
+      <span class="logo-en">kanemoto</span>
+    </a>
+    <a class="header-cta line-link" href="#line" aria-label="公式LINE">
+      <svg class="line-icon" width="18" height="18" aria-hidden="true"><use href="#icon-line"></use></svg>
+      <span>公式LINE</span>
+    </a>
   </header>
 
   <main id="top">
@@ -31,18 +42,24 @@
       <div class="hero-media" role="img" aria-label="建設現場の風景"></div>
       <div class="hero-veil"></div>
       <div class="hero-content">
-        <p class="brand reveal" style="--d: 0ms">KonTech</p>
-        <h1 class="reveal" style="--d: 120ms">現場のAIを、<br />掛け声で終わらせない。</h1>
-        <p class="lede reveal" style="--d: 240ms">建設の実務知で、AI活用を勉強会と伴走から定着させる。</p>
-        <div class="cta-row reveal" style="--d: 360ms">
-          <a class="btn btn-primary line-link" href="#line">公式LINEで実践コンテンツを受け取る</a>
+        <p class="brand reveal" style="--d: 0ms">
+          <span class="brand-ja">KonTech</span>
+          <span class="brand-en">AI for the field</span>
+        </p>
+        <h1 class="reveal" style="--d: 140ms">現場のAIを、<br />掛け声で終わらせない。</h1>
+        <p class="lede reveal" style="--d: 280ms">建設の実務知で、AI活用を勉強会と伴走から定着させる。</p>
+        <div class="cta-row reveal" style="--d: 400ms">
+          <a class="btn btn-line line-link" href="#line">
+            <svg class="line-icon" width="22" height="22" aria-hidden="true"><use href="#icon-line"></use></svg>
+            <span>公式LINEで実践コンテンツを受け取る</span>
+          </a>
         </div>
       </div>
     </section>
 
     <section class="section section-problem" id="problem">
       <div class="section-inner reveal-on-scroll">
-        <p class="section-label">課題</p>
+        <p class="section-label">Issue</p>
         <h2>AIの話は増えた。<br />現場は、まだ変わっていない。</h2>
         <p class="section-body">
           チャットで下書きはできた。資料も少し早くなった。それでも、見積・日報・引継ぎ・判断の流れは、昔のまま残っていることが多い。ツールを足すほど、現場と事務の溝が広がるケースもあります。
@@ -52,7 +69,7 @@
 
     <section class="section section-approach" id="approach">
       <div class="section-inner reveal-on-scroll">
-        <p class="section-label">考え方</p>
+        <p class="section-label">Approach</p>
         <h2>導入で終わらせず、<br />運用まで設計する。</h2>
         <p class="section-body">
           KonTechは建設現場でICTとDXを扱ってきたチームです。AIも同じです。何を自動化し、何を人が残すか。誰が使い、どこで定着させるか。建設の仕事の流れに合わせて、使える状態まで一緒に落とします。
@@ -62,7 +79,7 @@
 
     <section class="section section-offer" id="offer">
       <div class="section-inner reveal-on-scroll">
-        <p class="section-label">提供内容</p>
+        <p class="section-label">Offer</p>
         <h2>AI・DX支援</h2>
         <p class="section-body">まずは小さく始め、現場で続く形に整えます。</p>
         <ul class="offer-list">
@@ -84,7 +101,7 @@
 
     <section class="section section-flow" id="flow">
       <div class="section-inner reveal-on-scroll">
-        <p class="section-label">流れ</p>
+        <p class="section-label">Flow</p>
         <h2>知るところから、使えるところへ。</h2>
         <ol class="flow-list">
           <li>
@@ -105,7 +122,7 @@
 
     <section class="section section-trust" id="trust">
       <div class="section-inner reveal-on-scroll">
-        <p class="section-label">信頼</p>
+        <p class="section-label">Trust</p>
         <h2>現場から出てきた、AIの話をする。</h2>
         <p class="section-body">
           株式会社カネモトのKonTechは、九州の地場ゼネコン現場でBIM/CIM・ICTの定着を支援してきた実践チームです。経済産業省のDX認定事業者としての知見を土台に、AIも「現場で続く使い方」から組み立てます。
@@ -115,19 +132,31 @@
 
     <section class="section section-final" id="line">
       <div class="section-inner reveal-on-scroll">
-        <p class="brand-mark">KonTech</p>
+        <p class="brand-mark">
+          <span class="brand-ja">KonTech</span>
+          <span class="brand-en">official line</span>
+        </p>
         <h2>まずは、実践コンテンツから。</h2>
         <p class="section-body">建設業向けのAI活用のヒントを、公式LINEでお届けします。</p>
-        <a class="btn btn-primary btn-lg line-link" href="#line">公式LINEで実践コンテンツを受け取る</a>
+        <a class="btn btn-line btn-lg line-link" href="#line">
+          <svg class="line-icon" width="24" height="24" aria-hidden="true"><use href="#icon-line"></use></svg>
+          <span>公式LINEで実践コンテンツを受け取る</span>
+        </a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <p class="footer-brand">KonTech</p>
+    <p class="footer-en">kanemoto group</p>
     <p class="footer-meta">株式会社カネモト</p>
     <p class="footer-note">本ページはAI・DX支援の案内です。ICT施工・BIM/CIM支援は別経路のご案内となります。</p>
   </footer>
+
+  <a class="fab-line line-link" href="#line" aria-label="公式LINEを友だち追加">
+    <svg class="line-icon" width="28" height="28" aria-hidden="true"><use href="#icon-line"></use></svg>
+    <span class="fab-label">公式LINE</span>
+  </a>
 
   <script src="main.js" defer></script>
 </body>
