@@ -165,6 +165,7 @@ function WaveField({ className = "" }: { className?: string }) {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerScrolled, setHeaderScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const impactRef = useRef<HTMLDivElement>(null);
   const [impactVisible, setImpactVisible] = useState(false);
 
@@ -190,10 +191,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const updateHeaderTone = () => setHeaderScrolled(window.scrollY > 28);
-    updateHeaderTone();
-    window.addEventListener("scroll", updateHeaderTone, { passive: true });
-    return () => window.removeEventListener("scroll", updateHeaderTone);
+    const onScroll = () => {
+      setHeaderScrolled(window.scrollY > 28);
+      // FV内はヒーロー自身のCTAが見えているため、追従ボタンはヒーローを過ぎてから出す。
+      setPastHero(window.scrollY > window.innerHeight * 0.7);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   function closeMenu() {
@@ -201,7 +206,7 @@ export default function Home() {
   }
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell ${pastHero ? "is-past-hero" : ""}`}>
       <header className={`site-header site-header--light ${headerScrolled ? "is-scrolled" : ""}`}>
         <a href="#top" className="brand" aria-label="カネモト AI伴走支援 トップへ" onClick={closeMenu}>
           <BrandMark />
