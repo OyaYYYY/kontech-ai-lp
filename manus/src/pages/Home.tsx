@@ -283,23 +283,23 @@ export default function Home() {
 
         <section className="issue" id="started">
           <div className="content-frame issue__layout">
-            <div className="issue__statement">
+            <figure className="issue__portrait">
+              <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
+              <figcaption>
+                <span>REPRESENTATIVE DIRECTOR</span>
+                <strong>金本 純一</strong>
+              </figcaption>
+            </figure>
+            <div className="issue__copy">
               <div className="section-label"><span>02</span> WHERE WE STARTED</div>
-              <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」最初にそう思ったのは、僕たち自身でした。</p>
               <h2>僕たちも、<em>宮崎で現場と事務所を回す25人の会社です。</em></h2>
-              <figure className="issue__portrait">
-                <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
-                <figcaption>
-                  <span>REPRESENTATIVE DIRECTOR</span>
-                  <strong>金本 純一</strong>
-                </figcaption>
-              </figure>
-            </div>
-            <div className="issue__cards">
-              <article><span>01</span><p><b>現場が終わってから、また書類。</b><br />見積・施工計画書・写真台帳。やることは多いのに、時間だけは増やせませんでした。</p></article>
-              <article><span>02</span><p><b>AIは、正直ちょっと遠かった。</b><br />専門の人がいない自分たちに、本当に使えるのか。最初はそう思っていました。</p></article>
-              <article><span>03</span><p><b>だから、書類の下書きから試した。</b><br />少しずつ「これなら現場にも持ち帰れる」が見えてきました。</p></article>
-              <p className="issue__closing">僕たち自身が手探りだったから、最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
+              <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」最初にそう思ったのは、僕たち自身でした。</p>
+              <div className="issue__cards">
+                <article><span>01</span><p><b>現場が終わってから、また書類。</b><br />見積・施工計画書・写真台帳。やることは多いのに、時間だけは増やせませんでした。</p></article>
+                <article><span>02</span><p><b>AIは、正直ちょっと遠かった。</b><br />専門の人がいない自分たちに、本当に使えるのか。最初はそう思っていました。</p></article>
+                <article><span>03</span><p><b>だから、書類の下書きから試した。</b><br />少しずつ「これなら現場にも持ち帰れる」が見えてきました。</p></article>
+                <p className="issue__closing">僕たち自身が手探りだったから、最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
+              </div>
             </div>
           </div>
         </section>
