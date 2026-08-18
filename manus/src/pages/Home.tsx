@@ -146,53 +146,62 @@ export default function Home() {
       </header>
 
       <main id="top">
-        <section className="hero hero--light section-rail">
+        <section className="hero hero--light">
           <div className="hero__surface" aria-hidden="true" />
           <HeroWaveBackdrop />
-          <div className="hero__content content-frame">
-            <p className="eyebrow"><span>CIVIL AI LAB</span> AI SUPPORT PROGRAM</p>
-            <h1 className="hero__statement">
-              <span>土木AI研究所が、</span>
-              <span>現場の仕事を</span>
-              <span>AIで軽くする。</span>
-            </h1>
-            <p className="hero__lead">
-              AIは、試してみるところから仕事が変わります。<br className="desktop-only" />
-              見積・書類・写真整理から、いま一番手間な仕事を一つ。土木AI研究所が実務で使える形まで伴走します。
-            </p>
-            <div className="hero__actions">
-              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line cta-focus--hero" onClick={() => trackCtaClick("line_register_click", "hero")}>
-                <MessageCircle size={18} />
-                LINEで仕事の悩みを送る
-                <ArrowRight size={18} />
-              </a>
+          <div className="content-frame hero__stage">
+            <div className="hero__content">
+              <p className="eyebrow"><span>CIVIL AI LAB</span> AI SUPPORT PROGRAM</p>
+              <h1 className="hero__statement">
+                <span>土木AI研究所が、</span>
+                <span>現場の仕事を</span>
+                <span>AIで軽くする。</span>
+              </h1>
+              <p className="hero__lead">
+                AIは、試してみるところから仕事が変わります。
+                見積・書類・写真整理から、いま一番手間な仕事を一つ。土木AI研究所が実務で使える形まで伴走します。
+              </p>
+              <div className="hero__actions">
+                <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line cta-focus--hero" onClick={() => trackCtaClick("line_register_click", "hero")}>
+                  <MessageCircle size={18} />
+                  LINEで仕事の悩みを送る
+                  <ArrowRight size={18} />
+                </a>
+              </div>
+              <div className="hero__line-reassurance">
+                <span>LINEで届く返信例</span>
+                <b>「出面集計に困っている」</b>
+                <em>→ まずは「日報から出面表をつくる」から試しましょう。</em>
+              </div>
+              <div className="hero__proof" aria-label="カネモトの支援基盤">
+                <span><b>1955</b> 創業</span>
+                <span><b>建設・ICT・DX</b> の現場知見</span>
+                <span><b>代表が伴走</b> する実務支援</span>
+              </div>
             </div>
-            <div className="hero__line-reassurance"><span>LINEで届く返信例</span><b>「出面集計に困っている」</b><em>→ まずは「日報から出面表をつくる」から試しましょう。</em></div>
-            <div className="hero__proof" aria-label="カネモトの支援基盤">
-              <span><b>1955</b> 創業</span><span><b>建設・ICT・DX</b> の現場知見</span><span><b>代表が伴走</b> する実務支援</span>
-            </div>
+            <figure className="hero__portrait">
+              <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
+              <figcaption>
+                <span>REPRESENTATIVE DIRECTOR</span>
+                <strong>金本 純一</strong>
+              </figcaption>
+            </figure>
           </div>
-          <figure className="hero__portrait">
-            <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
-            <figcaption><span>REPRESENTATIVE DIRECTOR</span><strong>金本 純一</strong></figcaption>
-          </figure>
-          <div className="hero__coordinate">KANEMOTO GROUP<br />AI TRAINING &amp; SUPPORT</div>
         </section>
 
-        <section className="issue section-rail">
+        <section className="issue" id="started">
           <div className="content-frame issue__layout">
-            <div className="section-label"><span>02</span> WHERE WE STARTED</div>
             <div className="issue__statement">
-              <div className="issue__origin"><span>MIYAZAKI</span><i />僕たちも、社員25人の土木会社です。</div>
+              <div className="section-label"><span>02</span> WHERE WE STARTED</div>
               <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」<br />最初にそう思ったのは、僕たち自身でした。</p>
-              <h2>僕たちも、<br /><em>宮崎で現場と<br />事務所を回す<br />25人の会社です。</em></h2>
+              <h2>僕たちも、<br /><em>宮崎で現場と事務所を回す<br />25人の会社です。</em></h2>
+              <p className="issue__closing">僕たち自身が手探りだったから、最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
             </div>
             <div className="issue__cards">
               <article><span>01</span><p><b>現場が終わってから、また書類。</b><br />見積・施工計画書・写真台帳。やることは多いのに、時間だけは増やせませんでした。</p></article>
               <article><span>02</span><p><b>AIは、正直ちょっと遠かった。</b><br />専門の人がいない自分たちに、本当に使えるのか。最初はそう思っていました。</p></article>
               <article><span>03</span><p><b>だから、書類の下書きから試した。</b><br />少しずつ「これなら現場にも持ち帰れる」が見えてきました。</p></article>
             </div>
-            <p className="issue__closing">僕たち自身が手探りだったから、<br className="desktop-only" />最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
           </div>
         </section>
 
@@ -346,7 +355,10 @@ export default function Home() {
           <span>© KANEMOTOGUMI</span>
         </div>
       </footer>
-      <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="floating-line cta-focus cta-focus--line" onClick={() => trackCtaClick("line_register_click", "floating_button")} aria-label="公式LINEへ登録して相談する"><MessageCircle size={20} /><span>LINEで相談</span><ArrowUpRight size={16} /></a>
+      <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="floating-line" onClick={() => trackCtaClick("line_register_click", "floating_button")} aria-label="公式LINEへ登録して相談する">
+        <MessageCircle size={22} />
+        <span className="floating-line__label">LINEで相談</span>
+      </a>
     </div>
   );
 }
