@@ -37,11 +37,20 @@ function BrandMark({ inverse = false }: { inverse?: boolean }) {
   );
 }
 
+const WAVE_SVG_PATH = "/assets/fv-wave.svg";
+const WAVE_SVG_WIDTH = 1440;
+const WAVE_SVG_HEIGHT = 730;
+const WAVE_BREAKPOINT = 834;
+const WAVE_OFFSET_X_SMALL = -35;
+const WAVE_SAMPLES = 200;
+
+type WaveLine = { points: { x: number; y: number }[]; opacity: number };
+
 /**
- * カネモト本体サイトのFVと同じ質感の波線。等高線状のカーブを重ね、
- * 各点を sin(x + t) で上下させて緩やかに流す。
+ * カネモト本体サイトのFVと同じ波線。fv-wave.svg の各パスを等間隔でサンプリングし、
+ * y に sin(x * 0.01 + t + i * 0.3) * 3 を足して流す（three.js版と同じ計算）。
  */
-function WaveField({ className = "", lineCount = 26 }: { className?: string; lineCount?: number }) {
+function WaveField({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -49,10 +58,12 @@ function WaveField({ className = "", lineCount = 26 }: { className?: string; lin
     const context = canvas?.getContext("2d");
     if (!canvas || !context) return;
 
+    let lines: WaveLine[] = [];
     let width = 0;
     let height = 0;
     let time = 0;
     let frame = 0;
+    let disposed = false;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -64,34 +75,33 @@ function WaveField({ className = "", lineCount = 26 }: { className?: string; lin
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
     };
 
-    const profile = (u: number) =>
-      0.52 -
-      0.28 * Math.sin(u * Math.PI * 0.92 + 0.42) +
-      0.09 * Math.sin(u * Math.PI * 2.3 + 1.2) +
-      0.04 * Math.sin(u * Math.PI * 4.4 + 2.6);
-
     const draw = () => {
       context.clearRect(0, 0, width, height);
+      if (!lines.length || !width || !height) return;
+
+      const compact = window.innerWidth <= WAVE_BREAKPOINT;
+      const scale = width / WAVE_SVG_WIDTH;
+      const zoom = compact ? 1 / 0.55 : 1;
+      const centerX = compact ? WAVE_OFFSET_X_SMALL : 0;
+
       context.lineWidth = 1;
-      const spread = height / (lineCount + 4);
 
-      for (let index = 0; index < lineCount; index += 1) {
-        const depth = index / (lineCount - 1);
+      lines.forEach((line, index) => {
         context.beginPath();
-        context.strokeStyle = `rgba(255,255,255,${0.1 + depth * 0.3})`;
-        const offset = (index - lineCount / 2) * spread * 0.85;
+        context.strokeStyle = `rgba(255,255,255,${line.opacity})`;
 
-        for (let x = 0; x <= width; x += 6) {
-          const y =
-            height * profile(x / Math.max(width, 1)) +
-            offset +
-            Math.sin(x * 0.011 + time + index * 0.3) * 3.2;
-          if (x === 0) context.moveTo(x, y);
-          else context.lineTo(x, y);
-        }
+        line.points.forEach((point, pointIndex) => {
+          const waved = point.y + Math.sin(point.x * 0.01 + time + index * 0.3) * 3;
+          const unitX = point.x * scale - width / 2;
+          const unitY = scale * (WAVE_SVG_HEIGHT / 2 - waved);
+          const screenX = width / 2 + (unitX - centerX) * zoom;
+          const screenY = height / 2 - unitY * zoom;
+          if (pointIndex === 0) context.moveTo(screenX, screenY);
+          else context.lineTo(screenX, screenY);
+        });
 
         context.stroke();
-      }
+      });
     };
 
     const tick = () => {
@@ -100,24 +110,51 @@ function WaveField({ className = "", lineCount = 26 }: { className?: string; lin
       frame = requestAnimationFrame(tick);
     };
 
-    resize();
-    draw();
-
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      frame = requestAnimationFrame(tick);
-    }
-
     const observer = new ResizeObserver(() => {
       resize();
       draw();
     });
     observer.observe(canvas);
+    resize();
+
+    fetch(WAVE_SVG_PATH)
+      .then((response) => response.text())
+      .then((markup) => {
+        if (disposed) return;
+
+        const parsed = new DOMParser().parseFromString(markup, "image/svg+xml");
+        const svg = parsed.documentElement as unknown as SVGSVGElement;
+        const stage = document.createElement("div");
+        stage.setAttribute("aria-hidden", "true");
+        stage.style.cssText = "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none";
+        stage.appendChild(svg);
+        document.body.appendChild(stage);
+
+        lines = Array.from(svg.querySelectorAll("path")).map((path) => {
+          const length = path.getTotalLength();
+          const points = Array.from({ length: WAVE_SAMPLES + 1 }, (_, step) => {
+            const point = path.getPointAtLength((length * step) / WAVE_SAMPLES);
+            return { x: point.x, y: point.y };
+          });
+          const declared = Number(path.getAttribute("opacity"));
+          return { points, opacity: Number.isFinite(declared) && declared > 0 ? declared : 1 };
+        });
+
+        stage.remove();
+        draw();
+
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          frame = requestAnimationFrame(tick);
+        }
+      })
+      .catch(() => undefined);
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(frame);
       observer.disconnect();
     };
-  }, [lineCount]);
+  }, []);
 
   return <canvas ref={canvasRef} className={`wave-field ${className}`} aria-hidden="true" />;
 }
@@ -200,46 +237,39 @@ export default function Home() {
       </header>
 
       <main id="top">
-        <section className="hero hero--light">
-          <div className="hero__surface" aria-hidden="true" />
-          <WaveField className="wave-field--hero" lineCount={28} />
-          <div className="content-frame hero__stage">
-            <div className="hero__content">
-              <p className="eyebrow"><span>CIVIL AI LAB</span> AI SUPPORT PROGRAM</p>
-              <h1 className="hero__statement">
-                <span>土木AI研究所が、</span>
-                <span>現場の仕事を</span>
-                <span>AIで軽くする。</span>
-              </h1>
-              <p className="hero__lead">
-                AIは、試してみるところから仕事が変わります。
-                見積・書類・写真整理から、いま一番手間な仕事を一つ。土木AI研究所が実務で使える形まで伴走します。
-              </p>
-              <div className="hero__actions">
-                <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line cta-focus--hero" onClick={() => trackCtaClick("line_register_click", "hero")}>
-                  <MessageCircle size={18} />
-                  LINEで仕事の悩みを送る
-                  <ArrowRight size={18} />
-                </a>
-              </div>
-              <div className="hero__line-reassurance">
-                <span>LINEで届く返信例</span>
-                <b>「出面集計に困っている」</b>
-                <em>→ まずは「日報から出面表をつくる」から試しましょう。</em>
-              </div>
-              <div className="hero__proof" aria-label="カネモトの支援基盤">
-                <span><b>1955</b> 創業</span>
-                <span><b>建設・ICT・DX</b> の現場知見</span>
-                <span><b>代表が伴走</b> する実務支援</span>
-              </div>
+        <section className="hero hero--fv">
+          <WaveField className="wave-field--hero" />
+          <div className="content-frame hero__inner">
+            <p className="hero__eyebrow">CIVIL AI LAB — AI SUPPORT PROGRAM</p>
+            <h1 className="hero__heading">
+              <span>土木AI研究所が、</span>
+              <span>現場の仕事を</span>
+              <span>AIで軽くする。</span>
+            </h1>
+            <p className="hero__lead">
+              見積・書類・写真整理から、いま一番手間な仕事を一つ。
+              <br />
+              実務で使える形まで、カネモトが伴走します。
+            </p>
+            <div className="hero__actions">
+              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line" onClick={() => trackCtaClick("line_register_click", "hero")}>
+                <MessageCircle size={18} />
+                LINEで仕事の悩みを送る
+                <ArrowRight size={18} />
+              </a>
+              <a href="#program" className="hero__text-link">支援内容を見る</a>
             </div>
-            <figure className="hero__portrait">
-              <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
-              <figcaption>
-                <span>REPRESENTATIVE DIRECTOR</span>
-                <strong>金本 純一</strong>
-              </figcaption>
-            </figure>
+            <p className="hero__reply">
+              <span>LINEで届く返信例</span>
+              「出面集計に困っている」→ まずは<b>日報から出面表をつくる</b>から試しましょう。
+            </p>
+          </div>
+          <div className="hero__proof" aria-label="カネモトの支援基盤">
+            <div className="content-frame hero__proof-inner">
+              <span><b>1955</b>創業</span>
+              <span><b>建設・ICT・DX</b>の現場知見</span>
+              <span><b>代表が伴走</b>する実務支援</span>
+            </div>
           </div>
         </section>
 
@@ -249,12 +279,19 @@ export default function Home() {
               <div className="section-label"><span>02</span> WHERE WE STARTED</div>
               <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」<br />最初にそう思ったのは、僕たち自身でした。</p>
               <h2>僕たちも、<br /><em>宮崎で現場と事務所を回す<br />25人の会社です。</em></h2>
-              <p className="issue__closing">僕たち自身が手探りだったから、最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
+              <figure className="issue__portrait">
+                <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
+                <figcaption>
+                  <span>REPRESENTATIVE DIRECTOR</span>
+                  <strong>金本 純一</strong>
+                </figcaption>
+              </figure>
             </div>
             <div className="issue__cards">
               <article><span>01</span><p><b>現場が終わってから、また書類。</b><br />見積・施工計画書・写真台帳。やることは多いのに、時間だけは増やせませんでした。</p></article>
               <article><span>02</span><p><b>AIは、正直ちょっと遠かった。</b><br />専門の人がいない自分たちに、本当に使えるのか。最初はそう思っていました。</p></article>
               <article><span>03</span><p><b>だから、書類の下書きから試した。</b><br />少しずつ「これなら現場にも持ち帰れる」が見えてきました。</p></article>
+              <p className="issue__closing">僕たち自身が手探りだったから、最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
             </div>
           </div>
         </section>
@@ -384,7 +421,7 @@ export default function Home() {
 
         <section className="final-cta section-rail">
           <div className="final-cta__image" aria-hidden="true" />
-          <WaveField className="wave-field--final" lineCount={22} />
+          <WaveField className="wave-field--final" />
           <div className="content-frame final-cta__content">
             <p className="eyebrow eyebrow--light"><span>08</span> NEXT STEP <i className="direction-mark" /></p>
             <h2>まず、<br /><em>今の仕事を<br />LINEで送ってください。</em></h2>
