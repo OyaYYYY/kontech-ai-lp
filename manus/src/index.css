@@ -511,19 +511,24 @@ h2 em {
   letter-spacing: 0.28em;
 }
 
-/* 1行の文字数が固定なので折り返しを禁止し、文字サイズを幅に追従させる。 */
+/*
+ * 見出しはフレーズ単位の inline-block を並べ、入るところまで同じ行に流す。
+ * 広い画面では2行の横長、狭い画面では3行に自然に落ち、句の途中では絶対に折れない。
+ */
 .hero__heading {
-  display: grid;
-  gap: clamp(2px, 0.6vw, 10px);
+  display: block;
   font-family: var(--serif);
   font-size: var(--fs-display);
   font-weight: 400;
-  letter-spacing: 0.06em;
-  line-height: 1.36;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  word-spacing: -0.3em;
   text-shadow: 0 2px 18px rgba(3, 34, 58, 0.28);
 }
 
 .hero__heading span {
+  display: inline-block;
+  margin-right: -0.08em;
   white-space: nowrap;
 }
 
@@ -638,8 +643,11 @@ h2 em {
   }
 
   .hero__heading {
-    letter-spacing: 0.14em;
-    text-indent: 0.14em;
+    letter-spacing: 0.12em;
+  }
+
+  .hero__heading span {
+    margin-right: -0.12em;
   }
 }
 
