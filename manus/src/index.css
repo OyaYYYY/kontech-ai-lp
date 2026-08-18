@@ -2408,3 +2408,41 @@ body {
     width: 100%;
   }
 }
+
+/* =========================================================
+   SECTION RHYTHM
+   各セクションの上下余白を一段詰めて、全体のスクロール量を抑える。
+   ========================================================= */
+
+.issue,
+.promise,
+.services,
+.metrics,
+.evidence,
+.program,
+.initial-line,
+.guide-download,
+.ai-check,
+.flow,
+.faq,
+.civil-cases,
+.gift,
+.cta-faq,
+.inquiry {
+  padding-top: clamp(56px, 6.2vw, 84px);
+  padding-bottom: clamp(56px, 6.2vw, 84px);
+}
+
+.final-cta {
+  min-height: 0;
+  padding: clamp(64px, 7vw, 96px) 0;
+}
+
+.issue__closing,
+.civil-cases__foot {
+  margin-top: 14px;
+}
+
+.gift__reassurance {
+  margin: 22px 0;
+}
