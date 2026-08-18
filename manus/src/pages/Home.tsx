@@ -285,8 +285,8 @@ export default function Home() {
           <div className="content-frame issue__layout">
             <div className="issue__statement">
               <div className="section-label"><span>02</span> WHERE WE STARTED</div>
-              <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」<br />最初にそう思ったのは、僕たち自身でした。</p>
-              <h2>僕たちも、<br /><em>宮崎で現場と事務所を回す<br />25人の会社です。</em></h2>
+              <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」最初にそう思ったのは、僕たち自身でした。</p>
+              <h2>僕たちも、<em>宮崎で現場と事務所を回す25人の会社です。</em></h2>
               <figure className="issue__portrait">
                 <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
                 <figcaption>
