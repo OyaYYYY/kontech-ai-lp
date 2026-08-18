@@ -2213,3 +2213,198 @@ body {
     animation: none !important;
   }
 }
+
+/* =========================================================
+   FREE CHECKLIST (LINE登録の受け取り物)
+   登録理由を「先にもらえるもの」で成立させるセクション。
+   ========================================================= */
+
+.gift {
+  padding: clamp(72px, 10vw, 110px) 0;
+  background: #fff;
+}
+
+.gift__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(36px, 5vw, 72px);
+  align-items: start;
+}
+
+.gift__copy .eyebrow {
+  justify-content: flex-start;
+}
+
+.gift__copy h2 {
+  margin: 16px 0 20px;
+  font-family: "Zen Antique", serif;
+  font-size: clamp(1.7rem, 3.3vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.gift__copy h2 em {
+  color: var(--kanemoto-blue);
+  font-style: normal;
+}
+
+.gift__copy > p {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--kanemoto-text-soft);
+  font-size: 0.92rem;
+  line-height: 2;
+}
+
+.gift__reassurance {
+  display: grid;
+  gap: 10px;
+  margin: 28px 0;
+  padding: 18px 20px;
+  background: var(--kanemoto-bg);
+  border-left: 3px solid var(--line-green);
+}
+
+.gift__reassurance div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1d3a49;
+}
+
+.gift__reassurance svg {
+  flex: 0 0 auto;
+  color: var(--line-green-dark);
+}
+
+.gift .button--line {
+  min-height: 56px;
+  padding: 0 26px;
+}
+
+.gift__note {
+  margin: 14px 0 0;
+  color: #67767d;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+.gift__card {
+  background: #fff;
+  border: 1px solid rgba(0, 106, 173, 0.24);
+  border-top: 4px solid var(--kanemoto-blue);
+  box-shadow: 0 18px 40px rgba(0, 52, 79, 0.1);
+}
+
+.gift__card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px;
+  background: var(--kanemoto-bg);
+  border-bottom: 1px solid rgba(0, 106, 173, 0.18);
+}
+
+.gift__card-head i {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--kanemoto-blue);
+  color: #fff;
+}
+
+.gift__card-head span {
+  display: block;
+  color: var(--kanemoto-blue);
+  font-family: "Outfit", sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.gift__card-head b {
+  display: block;
+  margin-top: 3px;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.gift__card-head em {
+  margin-left: auto;
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  background: #fff;
+  border: 1px solid rgba(0, 106, 173, 0.3);
+  color: var(--kanemoto-blue);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.gift__list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 22px;
+}
+
+.gift__list li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.gift__list li:last-child {
+  border-bottom: 0;
+}
+
+.gift__list svg {
+  margin-top: 4px;
+  color: var(--line-green-dark);
+}
+
+.gift__card-foot {
+  margin: 0;
+  padding: 14px 22px;
+  background: var(--kanemoto-blue-ink);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.72rem;
+  line-height: 1.7;
+}
+
+.final-cta__reassurance {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+.final-cta__reassurance svg {
+  flex: 0 0 auto;
+  color: #8ef0b4;
+}
+
+@media (max-width: 900px) {
+  .gift__layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .gift .button--line {
+    width: 100%;
+  }
+}
