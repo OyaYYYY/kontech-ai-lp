@@ -2446,3 +2446,34 @@ body {
 .gift__reassurance {
   margin: 22px 0;
 }
+
+/* =========================================================
+   HERO HEADLINE FIT
+   1行の文字数は固定なので、折り返しを禁止して幅に追従させる。
+   ========================================================= */
+
+.hero--fv .hero__heading {
+  gap: clamp(2px, 0.5vw, 8px);
+  font-size: clamp(22px, 7.4vw, 56px);
+  line-height: 1.32;
+}
+
+.hero--fv .hero__heading span {
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .hero--fv .hero__heading {
+    letter-spacing: 0.06em;
+    text-indent: 0.06em;
+  }
+}
+
+/* 縦積みのFVでは中央寄せが子要素の幅まで縮めてしまうため、帯は全幅で敷く。 */
+.hero.hero--fv {
+  align-items: stretch;
+}
+
+.hero--fv .hero__proof-inner span {
+  white-space: nowrap;
+}
