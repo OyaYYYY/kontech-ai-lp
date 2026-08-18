@@ -1,0 +1,352 @@
+/**
+ * カネモトAI講習会LP：白地と建設ブルー、背景に淡く流れる波線、自然にトリミングした社長写真を基調に、AIを現場の仕事へ落とし込むLP。
+ */
+import { useEffect, useRef, useState } from "react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  BadgeCheck,
+  BookOpenCheck,
+  Calculator,
+  Camera,
+  CalendarClock,
+  Check,
+  ClipboardCheck,
+  Clock3,
+  FileText,
+  Menu,
+  MessageCircle,
+  Sparkles,
+  ShieldCheck,
+  X,
+} from "lucide-react";
+
+// 差し替え箇所：正式URLの受領後、この2行だけを更新する。
+const OFFICIAL_LINE_URL = "https://line.me/ti/p/@kanemotoai";
+
+function trackCtaClick(event: "line_register_click" | "inquiry_click" | "inquiry_form_submit", placement: string) {
+  const analytics = (window as Window & {
+    umami?: { track?: (eventName: string, data?: Record<string, string>) => void };
+  }).umami;
+  analytics?.track?.(event, { placement });
+}
+
+function BrandMark({ inverse = false }: { inverse?: boolean }) {
+  return (
+    <span className={`brand-mark ${inverse ? "brand-mark--inverse" : ""}`} aria-hidden="true">
+      <img src="/assets/kanemoto-logo-tagline.svg" alt="" />
+    </span>
+  );
+}
+
+function WaveLines({ className = "" }: { className?: string }) {
+  return (
+    <div className={`wave-lines ${className}`} aria-hidden="true">
+      <svg viewBox="0 0 1440 280" preserveAspectRatio="none">
+        <path d="M-40 96C170 28 286 163 470 113S780 33 948 108s312 60 532-19" />
+        <path d="M-55 145c192-51 339 51 516 10s335-100 504-26 331 108 522 21" />
+        <path d="M-45 199c180-42 355 38 526-8s338-113 512-46 302 121 490 29" />
+      </svg>
+    </div>
+  );
+}
+
+function HeroWaveBackdrop() {
+  const offsets = Array.from({ length: 25 }, (_, index) => (index - 12) * 9);
+  return (
+    <div className="hero-wave-backdrop" aria-hidden="true">
+      <svg viewBox="0 0 1440 340" preserveAspectRatio="none">
+        {offsets.map((offset) => (
+          <path
+            key={offset}
+            d={`M-96 ${166 + offset * 0.18}C120 ${28 + offset} 292 ${310 - offset * 0.24} 486 ${166 + offset * 0.14}S784 ${28 - offset * 0.32} 960 ${185 + offset * 0.14}s292 150 576 -58`}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
+  const impactRef = useRef<HTMLDivElement>(null);
+  const [impactVisible, setImpactVisible] = useState(false);
+
+  useEffect(() => {
+    const impactNode = impactRef.current;
+    if (!impactNode || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setImpactVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setImpactVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.24 },
+    );
+
+    observer.observe(impactNode);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const updateHeaderTone = () => setHeaderScrolled(window.scrollY > 28);
+    updateHeaderTone();
+    window.addEventListener("scroll", updateHeaderTone, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeaderTone);
+  }, []);
+
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
+  return (
+    <div className="site-shell">
+      <header className={`site-header site-header--light ${headerScrolled ? "is-scrolled" : ""}`}>
+        <a href="#top" className="brand" aria-label="カネモト AI伴走支援 トップへ" onClick={closeMenu}>
+          <BrandMark />
+          <span className="brand__type">
+            <strong>カネモト</strong>
+            <small>AI SUPPORT</small>
+          </span>
+        </a>
+
+        <nav className="desktop-nav" aria-label="メインナビゲーション">
+          <a href="#metrics">成果の見方</a>
+          <a href="#program">支援内容</a>
+          <a href="#flow">進め方</a>
+        </nav>
+
+        <a className="header-cta cta-focus cta-focus--line" href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" onClick={() => trackCtaClick("line_register_click", "header")}>
+          <MessageCircle size={17} strokeWidth={2.2} />
+          <span>LINEで相談</span>
+          <ArrowUpRight size={16} />
+        </a>
+
+        <button className="mobile-menu-button" type="button" aria-label="メニューを開く" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {menuOpen && (
+          <div className="mobile-menu" aria-label="モバイルメニュー">
+            <a href="#metrics" onClick={closeMenu}>成果の見方</a>
+            <a href="#program" onClick={closeMenu}>支援内容</a>
+            <a href="#flow" onClick={closeMenu}>進め方</a>
+            <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="mobile-menu__line" onClick={() => { trackCtaClick("line_register_click", "mobile_menu"); closeMenu(); }}>
+              公式LINEで相談する <ArrowUpRight size={17} />
+            </a>
+          </div>
+        )}
+      </header>
+
+      <main id="top">
+        <section className="hero hero--light section-rail">
+          <div className="hero__surface" aria-hidden="true" />
+          <HeroWaveBackdrop />
+          <div className="hero__content content-frame">
+            <p className="eyebrow"><span>CIVIL AI LAB</span> AI SUPPORT PROGRAM</p>
+            <h1 className="hero__statement">
+              <span>土木AI研究所が、</span>
+              <span>現場の仕事を</span>
+              <span>AIで軽くする。</span>
+            </h1>
+            <p className="hero__lead">
+              AIは、試してみるところから仕事が変わります。<br className="desktop-only" />
+              見積・書類・写真整理から、いま一番手間な仕事を一つ。土木AI研究所が実務で使える形まで伴走します。
+            </p>
+            <div className="hero__actions">
+              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line cta-focus--hero" onClick={() => trackCtaClick("line_register_click", "hero")}>
+                <MessageCircle size={18} />
+                LINEで仕事の悩みを送る
+                <ArrowRight size={18} />
+              </a>
+            </div>
+            <div className="hero__line-reassurance"><span>LINEで届く返信例</span><b>「出面集計に困っている」</b><em>→ まずは「日報から出面表をつくる」から試しましょう。</em></div>
+            <div className="hero__proof" aria-label="カネモトの支援基盤">
+              <span><b>1955</b> 創業</span><span><b>建設・ICT・DX</b> の現場知見</span><span><b>代表が伴走</b> する実務支援</span>
+            </div>
+          </div>
+          <figure className="hero__portrait">
+            <img src="/assets/kanemoto-president-junichi.png" alt="株式会社カネモト 代表取締役 金本純一" />
+            <figcaption><span>REPRESENTATIVE DIRECTOR</span><strong>金本 純一</strong></figcaption>
+          </figure>
+          <div className="hero__coordinate">KANEMOTO GROUP<br />AI TRAINING &amp; SUPPORT</div>
+        </section>
+
+        <section className="issue section-rail">
+          <div className="content-frame issue__layout">
+            <div className="section-label"><span>02</span> WHERE WE STARTED</div>
+            <div className="issue__statement">
+              <div className="issue__origin"><span>MIYAZAKI</span><i />僕たちも、社員25人の土木会社です。</div>
+              <p className="issue__kicker">「AIって、うちの仕事でも使えるんかな？」<br />最初にそう思ったのは、僕たち自身でした。</p>
+              <h2>僕たちも、<br /><em>宮崎で現場と<br />事務所を回す<br />25人の会社です。</em></h2>
+            </div>
+            <div className="issue__cards">
+              <article><span>01</span><p><b>現場が終わってから、また書類。</b><br />見積・施工計画書・写真台帳。やることは多いのに、時間だけは増やせませんでした。</p></article>
+              <article><span>02</span><p><b>AIは、正直ちょっと遠かった。</b><br />専門の人がいない自分たちに、本当に使えるのか。最初はそう思っていました。</p></article>
+              <article><span>03</span><p><b>だから、書類の下書きから試した。</b><br />少しずつ「これなら現場にも持ち帰れる」が見えてきました。</p></article>
+            </div>
+            <p className="issue__closing">僕たち自身が手探りだったから、<br className="desktop-only" />最初に試す仕事を一緒に決め、現場と事務所に持ち帰れる形に整えます。</p>
+          </div>
+        </section>
+
+        <section className="program section-rail" id="program">
+          <div className="content-frame program__layout">
+            <div className="program__intro">
+              <p className="eyebrow eyebrow--light"><span>03</span> KANEMOTO CIVIL AI PROGRAM</p>
+              <h2>カネモトの、<br /><em>土木AI<br />支援プログラム。</em></h2>
+              <p>AIに詳しくなくても、今の段階に合う始め方を選べます。迷う場合は、LINEで仕事の悩みを送ってください。まずどの支援が合うか、一緒に整理します。</p>
+              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line" onClick={() => trackCtaClick("line_register_click", "civil_ai_program")}><MessageCircle size={18} />LINEで支援の選び方を相談する<ArrowRight size={18} /></a>
+            </div>
+            <div className="program__options" aria-label="支援プログラムの選択肢">
+              <article className="program__option-card">
+                <div className="program__option-head"><i><BookOpenCheck size={19} /></i><span>ONE-OFF SESSION</span><h3>単発講習</h3><p>まず一度、AIを現場の仕事で試してみたい会社へ。</p></div>
+                <div className="program__option-rows"><div><span>対象</span><b>AIをほとんど使ったことがない／社内の入口をつくりたい</b></div><div><span>進め方</span><b>90分〜2時間の実務講習。少人数でも対応</b></div></div>
+                <div className="program__option-price"><span>料金目安</span><b>5万円〜／回 <small>参加人数・内容により変動</small></b></div>
+                <div className="program__option-outcome"><BadgeCheck size={17} /><span><small>持ち帰るもの</small><b>まず試す業務と、その日の依頼文</b></span></div>
+              </article>
+              <article className="program__option-card program__option-card--featured">
+                <div className="program__option-head"><i><Clock3 size={19} /></i><span>4-WEEK ACCOMPANIMENT</span><h3>4週間伴走</h3><p>一つの仕事を、実務で使える形まで整えたい会社へ。</p></div>
+                <div className="program__option-rows"><div><span>対象</span><b>見積・書類・写真整理を仕事で定着させたい</b></div><div><span>進め方</span><b>テーマ選定 → 実務検証 → 使い方を整える</b></div></div>
+                <div className="program__option-price"><span>料金目安</span><b>20万円〜／4週間 <small>対象業務・訪問回数により変動</small></b></div>
+                <div className="program__option-outcome"><BadgeCheck size={17} /><span><small>持ち帰るもの</small><b>貴社用の使い方・業務フロー・確認指標</b></span></div>
+              </article>
+              <article className="program__option-card">
+                <div className="program__option-head"><i><MessageCircle size={19} /></i><span>CONTINUOUS SUPPORT</span><h3>継続支援</h3><p>AIを社内に広げ、少しずつ改善を続けたい会社へ。</p></div>
+                <div className="program__option-rows"><div><span>対象</span><b>複数の業務・担当者へ少しずつ広げたい</b></div><div><span>進め方</span><b>月次定例とLINE伴走で、改善を積み重ねる</b></div></div>
+                <div className="program__option-price"><span>料金目安</span><b>10万円〜／月 <small>対象業務・相談頻度により変動</small></b></div>
+                <div className="program__option-outcome"><BadgeCheck size={17} /><span><small>持ち帰るもの</small><b>毎月の改善テーマと、社内で続ける仕組み</b></span></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="initial-line section-rail" id="line-consult">
+          <div className="content-frame initial-line__layout">
+            <div className="initial-line__copy">
+              <p className="eyebrow"><span>04</span> FIRST LINE CONSULT <i className="direction-mark" /></p>
+              <h2>初回LINE相談で、<br /><em>ここまで決まる。</em></h2>
+              <p>「出面集計に困っている」など、いま気になる仕事を一言送ってください。LINEのやり取りと必要なら15分の相談で、最初の一歩を具体的にします。</p>
+              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line" onClick={() => trackCtaClick("line_register_click", "first_line_consult")}><MessageCircle size={18} />LINEで最初の一歩を相談する<ArrowRight size={18} /></a>
+            </div>
+            <div className="initial-line__decisions" aria-label="初回LINE相談で決まること">
+              <article><span>01</span><div><b>最初に試す仕事</b><p>出面集計・見積・写真整理など、いま一番手間な作業を一つに絞ります。</p></div></article>
+              <article><span>02</span><div><b>合う支援の形と費用感</b><p>単発講習、4週間伴走、継続支援のどれが合うか。人数や対象業務に合わせた料金目安を整理します。</p></div></article>
+              <article><span>03</span><div><b>最初に準備するもの</b><p>日報・過去見積・工事写真など、あれば役立つ資料を確認します。なくても相談から始められます。</p></div></article>
+              <p className="initial-line__note">相談だけで支援を決める必要はありません。まず、できそうな一歩があるかを一緒に見ます。</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="civil-cases section-rail" id="civil-cases">
+          <div className="content-frame">
+            <div className="civil-cases__head">
+              <div>
+                <p className="eyebrow"><span>05</span> CIVIL WORK × AI</p>
+                <h2>土木の仕事で、<br /><em>まず試せること。</em></h2>
+              </div>
+              <p>いきなり大きく変える必要はありません。<br />書類・写真・見積のうち、いま一番手間な作業を一つ選べば十分です。</p>
+            </div>
+            <div className="civil-cases__grid">
+              <article className="civil-case-card">
+                <div className="civil-case-card__top"><span>CASE 01</span><i><FileText size={22} /></i></div>
+                <h3>施工計画書の<br />たたき台をつくる</h3>
+                <p>図面・仕様書を読み、目次、注意点、必要な情報を整理。最初の下書きづくりからAIに任せます。</p>
+                <div className="civil-case-card__result"><b>業界公開事例（別会社）</b><span>施工計画書の<br /><strong>初稿作成を短縮</strong></span></div>
+                <a href="https://log-port.com/case/ai-civil-engineering-chatgpt-case-study-dx/" target="_blank" rel="noreferrer">公開事例を見る <ArrowUpRight size={15} /></a>
+              </article>
+              <article className="civil-case-card civil-case-card--blue">
+                <div className="civil-case-card__top"><span>CASE 02</span><i><Camera size={22} /></i></div>
+                <h3>工事写真を<br />整理・台帳化する</h3>
+                <p>黒板の情報を読み、工種・部位・日付で写真を分類。写真帳の下書きや、撮り漏れ確認を助けます。</p>
+                <div className="civil-case-card__result"><b>業界公開情報（別会社）</b><span>写真整理に<br /><strong>月20〜40時間</strong>の課題例</span></div>
+                <a href="https://prtimes.jp/main/html/rd/p/000000061.000058841.html" target="_blank" rel="noreferrer">公開事例を見る <ArrowUpRight size={15} /></a>
+              </article>
+              <article className="civil-case-card">
+                <div className="civil-case-card__top"><span>CASE 03</span><i><Calculator size={22} /></i></div>
+                <h3>見積の下書きを<br />速く、迷わずつくる</h3>
+                <p>過去案件の内容を探し、必要な項目や文面を拾い出す。見積を「ゼロから書く」時間を減らします。</p>
+                <div className="civil-case-card__result"><b>当社支援事例（対象1社）</b><span>対象業務の見積作成時間を<br /><strong>50%以上短縮</strong></span></div>
+                <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" onClick={() => trackCtaClick("line_register_click", "civil_case_estimate")}>うちの見積なら、どこから試す？ <ArrowRight size={15} /></a>
+              </article>
+            </div>
+            <div className="civil-cases__foot"><p>※ CASE 01・02は他社が公開する業界事例であり、カネモトの支援実績ではありません。CASE 03は対象1社・対象業務での計測結果で、同様の成果を保証するものではありません。</p><a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="underlined-link" onClick={() => trackCtaClick("line_register_click", "civil_cases")}>うちの仕事なら、どれから試す？ <ArrowRight size={17} /></a></div>
+          </div>
+        </section>
+
+        <section className="metrics section-rail" id="metrics">
+          <div className="content-frame metrics__layout">
+            <div className="metrics__copy">
+              <p className="eyebrow"><span>06</span> PERFORMANCE INDEX <i className="direction-mark" /></p>
+              <h2>使ってみると、<br /><em>仕事の変化</em>が<br />見えてくる。</h2>
+              <p>
+                「便利だった」で終わらせず、仕事の変化を数字でも確かめます。現場の時間がどれだけ戻ったか、外に出していた仕事をどこまで社内で回せるようになったか。小さな一歩が、次の改善につながります。
+              </p>
+              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="underlined-link" onClick={() => trackCtaClick("line_register_click", "metrics")}>LINEで、自社向けのテーマを聞く <ArrowRight size={17} /></a>
+            </div>
+            <div ref={impactRef} className={`impact-dashboard ${impactVisible ? "is-visible" : ""}`} aria-label="AI活用による成果指標の例">
+              <div className="impact-dashboard__head"><span>SUPPORT CASE / CONDITIONS DISCLOSED</span><BarChart3 size={18} /></div>
+              <div className="impact-summary-card">
+                <div className="impact-summary-card__lead"><span>対象1社・対象業務での支援事例</span><b>数字は、実際に仕事で使った結果です。</b></div>
+                <div className="impact-summary-card__grid">
+                  <article><span>01 / OUTSOURCING COST</span><strong><small>約</small>200<em>万円</em></strong><b>資料作成等の外注費を削減</b><p>対象業務の比較結果</p></article>
+                  <article><span>02 / ESTIMATE TIME</span><strong>50<em>%以上</em></strong><b>見積作成時間を短縮</b><p>導入前を100とした時間指数</p></article>
+                </div>
+                <p className="impact-summary-card__note">※対象1社・対象業務での結果です。体制、導入期間、AIツール、算定方法により異なり、同様の成果を保証するものではありません。計測条件はLINEでご確認ください。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="flow section-rail" id="flow">
+          <div className="content-frame">
+            <div className="section-head">
+              <p className="eyebrow eyebrow--light"><span>07</span> STARTING FLOW <i className="direction-mark" /></p>
+              <h2>相談から、<br />「できた」が増えるところまで。</h2>
+            </div>
+            <div className="flow__steps">
+              <article><div className="flow__icon"><MessageCircle size={23} /></div><span>STEP 01</span><h3>気になる仕事を送る</h3><p>いま時間がかかっている作業を、一言で送ってください。写真でも、箇条書きでも構いません。</p></article>
+              <article><div className="flow__icon"><CalendarClock size={23} /></div><span>STEP 02</span><h3>15分で支援の形と費用感を整理する</h3><p>オンラインで状況を伺い、最初に試す業務、講習の形、料金目安を一緒に整理します。</p></article>
+              <article><div className="flow__icon"><BookOpenCheck size={23} /></div><span>STEP 03</span><h3>実際の仕事で使ってみる</h3><p>講習・勉強会で、日々の実務を動かします。分からないところは、その場で戻ります。</p></article>
+              <article><div className="flow__icon"><ClipboardCheck size={23} /></div><span>STEP 04</span><h3>「できた」を次へ広げる</h3><p>使った結果を一緒に振り返り、次に試す仕事を決めます。必要なら継続支援へ進みます。</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section className="final-cta section-rail">
+          <div className="final-cta__image" aria-hidden="true" />
+          <WaveLines className="wave-lines--final" />
+          <div className="content-frame final-cta__content">
+            <p className="eyebrow eyebrow--light"><span>08</span> NEXT STEP <i className="direction-mark" /></p>
+            <h2>まず、<br /><em>今の仕事を<br />LINEで送ってください。</em></h2>
+            <p>「出面集計に困っている」「見積の下書きが大変」など、一言で構いません。<br />カネモトが、まず試せる仕事と最初のやり方をお返しします。</p>
+            <div className="line-reply-preview" aria-label="LINEで届く返信例">
+              <div className="line-reply-preview__head"><MessageCircle size={18} /><span>LINEで届く、最初の返信例</span></div>
+              <p className="line-reply-preview__user">出面集計に困っている</p>
+              <div className="line-reply-preview__answer"><span>カネモトからのご提案</span><b>まずは「日報から出面表をつくる」から試しましょう。</b><p>日報をもとに、必要な項目の整理と出面表の下書きをつくる方法です。最初に使う依頼文もお送りします。</p></div>
+            </div>
+            <div className="final-cta__actions">
+              <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="button button--line cta-focus cta-focus--line" onClick={() => trackCtaClick("line_register_click", "final_cta")}><MessageCircle size={18} />LINEで仕事の悩みを送る<i className="button-direction" /><ArrowRight size={18} /></a>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer className="site-footer">
+        <div className="content-frame site-footer__row">
+          <div className="brand brand--footer"><BrandMark inverse /><span className="brand__type"><strong>カネモト</strong><small>AI SUPPORT</small></span></div>
+          <p>AIを、現場の仕事にする。</p>
+          <span>© KANEMOTOGUMI</span>
+        </div>
+      </footer>
+      <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="floating-line cta-focus cta-focus--line" onClick={() => trackCtaClick("line_register_click", "floating_button")} aria-label="公式LINEへ登録して相談する"><MessageCircle size={20} /><span>LINEで相談</span><ArrowUpRight size={16} /></a>
+    </div>
+  );
+}
