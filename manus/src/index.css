@@ -1653,3 +1653,267 @@ button { border: 0; }
     margin-left: 8px;
   }
 }
+
+/* =========================================================
+   BRAND COLOR PASS
+   kanemoto-group.jp のパレット（primary #006aad / bg #eaf1f5 /
+   text #000・#444）に合わせ、ヘッダーを青、FVを波線入りの
+   ブルー面に統一する。
+   ========================================================= */
+
+:root {
+  --kanemoto-blue: #006aad;
+  --kanemoto-blue-deep: #00527f;
+  --kanemoto-blue-ink: #00344f;
+  --kanemoto-bg: #eaf1f5;
+  --kanemoto-text: #000;
+  --kanemoto-text-soft: #444;
+}
+
+body {
+  color: var(--kanemoto-text);
+}
+
+/* ---- Header: solid brand blue ---- */
+.site-header,
+.site-header--light,
+.site-header--light.is-scrolled,
+.site-header.is-scrolled {
+  background: var(--kanemoto-blue) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 20px rgba(0, 52, 79, 0.14) !important;
+  backdrop-filter: none !important;
+}
+
+.site-header .brand-mark img,
+.site-header--light .brand-mark img,
+.site-header.is-scrolled .brand-mark img,
+.site-header--light.is-scrolled .brand-mark img {
+  filter: brightness(0) invert(1) !important;
+}
+
+.site-header .desktop-nav a,
+.site-header--light .desktop-nav a {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: 12.5px;
+}
+
+.site-header .desktop-nav a:hover,
+.site-header--light .desktop-nav a:hover {
+  color: #fff !important;
+}
+
+.site-header--light .header-cta,
+.site-header--light .header-cta.cta-focus--line,
+.site-header .header-cta {
+  background: var(--line-green) !important;
+  border-color: var(--line-green) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px rgba(0, 52, 79, 0.22) !important;
+}
+
+.site-header--light .header-cta:hover,
+.site-header--light .header-cta.cta-focus--line:hover,
+.site-header .header-cta:hover {
+  background: var(--line-green-dark) !important;
+  border-color: var(--line-green-dark) !important;
+}
+
+.site-header--light .mobile-menu-button,
+.site-header .mobile-menu-button {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  color: #fff !important;
+  border-radius: 6px;
+}
+
+/* ---- Hero: brand blue with flowing wave lines ---- */
+.hero,
+.hero.hero--light {
+  background: linear-gradient(160deg, #0079c2 0%, var(--kanemoto-blue) 46%, var(--kanemoto-blue-ink) 100%) !important;
+  color: #fff !important;
+  overflow: hidden !important;
+  padding-bottom: clamp(48px, 6vw, 72px);
+}
+
+.hero--light .hero__surface,
+.hero__surface {
+  background: transparent !important;
+}
+
+.hero--light .hero__surface::after,
+.hero__surface::after {
+  background: radial-gradient(ellipse 60% 55% at 82% 12%, rgba(255, 255, 255, 0.16), transparent 70%) !important;
+}
+
+.wave-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.wave-field--hero {
+  z-index: 1;
+  opacity: 0.75;
+}
+
+.wave-field--final {
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.hero-wave-backdrop {
+  display: none !important;
+}
+
+.hero .eyebrow,
+.hero--light .eyebrow {
+  color: #bfe8ff !important;
+}
+
+.hero .eyebrow span {
+  color: #fff !important;
+}
+
+.hero--light .hero__statement,
+.hero__statement {
+  color: #fff !important;
+}
+
+.hero--light .hero__statement span:nth-child(2) {
+  color: #9adcff !important;
+}
+
+.hero--light .hero__lead,
+.hero__lead {
+  color: rgba(255, 255, 255, 0.86) !important;
+}
+
+.hero--light .hero__proof,
+.hero__proof {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.hero--light .hero__proof span,
+.hero__proof span {
+  color: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+.hero--light .hero__proof b,
+.hero__proof b {
+  color: #9adcff !important;
+}
+
+.hero__line-reassurance {
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  border-left: 3px solid var(--line-green) !important;
+  background: rgba(0, 42, 66, 0.34) !important;
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: none;
+}
+
+.hero__line-reassurance span {
+  color: #a9dcf5 !important;
+}
+
+.hero__line-reassurance b {
+  color: #fff !important;
+}
+
+.hero__line-reassurance em {
+  color: #8ef0b4 !important;
+}
+
+.hero--light .hero__portrait,
+.hero__portrait {
+  background: #fff !important;
+  box-shadow: 0 24px 48px rgba(0, 30, 48, 0.28);
+}
+
+.hero__portrait figcaption {
+  background: var(--kanemoto-blue-ink) !important;
+}
+
+.hero__portrait figcaption span {
+  color: #8fd4f5 !important;
+}
+
+/* ---- Sections: align to site palette ---- */
+.issue {
+  background: #fff !important;
+}
+
+.issue .section-label,
+.section-label {
+  color: var(--kanemoto-blue);
+}
+
+.issue__kicker,
+.section-body {
+  color: var(--kanemoto-text-soft) !important;
+}
+
+.initial-line {
+  background: var(--kanemoto-bg) !important;
+}
+
+.civil-cases {
+  background: #fff !important;
+}
+
+.civil-case-card {
+  background: var(--kanemoto-bg) !important;
+  border-top-color: var(--kanemoto-blue) !important;
+}
+
+.civil-case-card--blue {
+  background: var(--kanemoto-blue) !important;
+  border-top-color: var(--kanemoto-blue-ink) !important;
+}
+
+.metrics {
+  background: var(--kanemoto-bg) !important;
+}
+
+.program,
+.flow {
+  background: var(--kanemoto-blue-ink) !important;
+}
+
+.program__option-outcome,
+.impact-summary-card__note,
+.evidence__note {
+  background: var(--kanemoto-blue-ink) !important;
+}
+
+.final-cta {
+  position: relative;
+  background: linear-gradient(160deg, var(--kanemoto-blue) 0%, var(--kanemoto-blue-ink) 100%) !important;
+  overflow: hidden !important;
+}
+
+.final-cta__content {
+  position: relative;
+  z-index: 2;
+}
+
+.site-footer {
+  background: var(--kanemoto-blue-ink) !important;
+}
+
+.site-footer__row > p {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+@media (max-width: 640px) {
+  .hero__portrait figcaption {
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+}

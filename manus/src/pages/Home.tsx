@@ -11,14 +11,11 @@ import {
   Calculator,
   Camera,
   CalendarClock,
-  Check,
   ClipboardCheck,
   Clock3,
   FileText,
   Menu,
   MessageCircle,
-  Sparkles,
-  ShieldCheck,
   X,
 } from "lucide-react";
 
@@ -40,32 +37,89 @@ function BrandMark({ inverse = false }: { inverse?: boolean }) {
   );
 }
 
-function WaveLines({ className = "" }: { className?: string }) {
-  return (
-    <div className={`wave-lines ${className}`} aria-hidden="true">
-      <svg viewBox="0 0 1440 280" preserveAspectRatio="none">
-        <path d="M-40 96C170 28 286 163 470 113S780 33 948 108s312 60 532-19" />
-        <path d="M-55 145c192-51 339 51 516 10s335-100 504-26 331 108 522 21" />
-        <path d="M-45 199c180-42 355 38 526-8s338-113 512-46 302 121 490 29" />
-      </svg>
-    </div>
-  );
-}
+/**
+ * カネモト本体サイトのFVと同じ質感の波線。等高線状のカーブを重ね、
+ * 各点を sin(x + t) で上下させて緩やかに流す。
+ */
+function WaveField({ className = "", lineCount = 26 }: { className?: string; lineCount?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-function HeroWaveBackdrop() {
-  const offsets = Array.from({ length: 25 }, (_, index) => (index - 12) * 9);
-  return (
-    <div className="hero-wave-backdrop" aria-hidden="true">
-      <svg viewBox="0 0 1440 340" preserveAspectRatio="none">
-        {offsets.map((offset) => (
-          <path
-            key={offset}
-            d={`M-96 ${166 + offset * 0.18}C120 ${28 + offset} 292 ${310 - offset * 0.24} 486 ${166 + offset * 0.14}S784 ${28 - offset * 0.32} 960 ${185 + offset * 0.14}s292 150 576 -58`}
-          />
-        ))}
-      </svg>
-    </div>
-  );
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    let width = 0;
+    let height = 0;
+    let time = 0;
+    let frame = 0;
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.max(1, Math.floor(width * ratio));
+      canvas.height = Math.max(1, Math.floor(height * ratio));
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+
+    const profile = (u: number) =>
+      0.52 -
+      0.28 * Math.sin(u * Math.PI * 0.92 + 0.42) +
+      0.09 * Math.sin(u * Math.PI * 2.3 + 1.2) +
+      0.04 * Math.sin(u * Math.PI * 4.4 + 2.6);
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+      context.lineWidth = 1;
+      const spread = height / (lineCount + 4);
+
+      for (let index = 0; index < lineCount; index += 1) {
+        const depth = index / (lineCount - 1);
+        context.beginPath();
+        context.strokeStyle = `rgba(255,255,255,${0.1 + depth * 0.3})`;
+        const offset = (index - lineCount / 2) * spread * 0.85;
+
+        for (let x = 0; x <= width; x += 6) {
+          const y =
+            height * profile(x / Math.max(width, 1)) +
+            offset +
+            Math.sin(x * 0.011 + time + index * 0.3) * 3.2;
+          if (x === 0) context.moveTo(x, y);
+          else context.lineTo(x, y);
+        }
+
+        context.stroke();
+      }
+    };
+
+    const tick = () => {
+      time += 0.03;
+      draw();
+      frame = requestAnimationFrame(tick);
+    };
+
+    resize();
+    draw();
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      frame = requestAnimationFrame(tick);
+    }
+
+    const observer = new ResizeObserver(() => {
+      resize();
+      draw();
+    });
+    observer.observe(canvas);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [lineCount]);
+
+  return <canvas ref={canvasRef} className={`wave-field ${className}`} aria-hidden="true" />;
 }
 
 export default function Home() {
@@ -148,7 +202,7 @@ export default function Home() {
       <main id="top">
         <section className="hero hero--light">
           <div className="hero__surface" aria-hidden="true" />
-          <HeroWaveBackdrop />
+          <WaveField className="wave-field--hero" lineCount={28} />
           <div className="content-frame hero__stage">
             <div className="hero__content">
               <p className="eyebrow"><span>CIVIL AI LAB</span> AI SUPPORT PROGRAM</p>
@@ -330,7 +384,7 @@ export default function Home() {
 
         <section className="final-cta section-rail">
           <div className="final-cta__image" aria-hidden="true" />
-          <WaveLines className="wave-lines--final" />
+          <WaveField className="wave-field--final" lineCount={22} />
           <div className="content-frame final-cta__content">
             <p className="eyebrow eyebrow--light"><span>08</span> NEXT STEP <i className="direction-mark" /></p>
             <h2>まず、<br /><em>今の仕事を<br />LINEで送ってください。</em></h2>
