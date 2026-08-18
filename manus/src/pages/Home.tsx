@@ -482,9 +482,9 @@ export default function Home() {
           <span>© KANEMOTOGUMI</span>
         </div>
       </footer>
-      <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="floating-line" onClick={() => trackCtaClick("line_register_click", "floating_button")} aria-label="公式LINEへ登録して相談する">
-        <MessageCircle size={22} />
-        <span className="floating-line__label">LINEで相談</span>
+      <a href={OFFICIAL_LINE_URL} target="_blank" rel="noreferrer" className="floating-line" onClick={() => trackCtaClick("line_register_click", "floating_button")} aria-label="公式LINEに登録して無料チェックシートを受け取る">
+        <MessageCircle size={20} />
+        <span className="floating-line__label">無料チェックシートを受け取る</span>
       </a>
     </div>
   );
